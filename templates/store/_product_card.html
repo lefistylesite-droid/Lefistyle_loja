@@ -1,0 +1,7 @@
+<article class="lefi-product-card">
+<a href="{{ product.get_absolute_url }}" class="lefi-product-image" aria-label="Ver detalhes de {{ product.name }}">
+{% if product.main_photo_url %}<img src="{{ product.main_photo_url }}" alt="{{ product.name }}" loading="lazy">{% else %}<div class="lefi-no-photo"><span>LEFI</span><small>FOTOGRAFIA EM PREPARAÇÃO</small></div>{% endif %}
+<span class="lefi-product-badge">{% if product.one_of_one %}PEÇA ÚNICA · 1/1{% elif product.creation_type == 'reconstruida' %}RECONSTRUÍDA{% else %}CRIAÇÃO AUTORAL{% endif %}</span>
+</a>
+<div class="lefi-product-info"><div class="lefi-product-category">{{ product.category.name|upper }}{% if product.collection %} / {{ product.collection|upper }}{% endif %}</div><a href="{{ product.get_absolute_url }}" class="lefi-product-name">{{ product.name }}</a>
+<div class="lefi-product-bottom"><div><strong>R$ {{ product.effective_price|floatformat:2 }}</strong>{% if product.has_discount %}<del>R$ {{ product.price|floatformat:2 }}</del>{% endif %}</div><a href="{{ product.get_absolute_url }}" aria-label="Detalhes de {{ product.name }}">↗</a></div></div></article>

@@ -13,22 +13,113 @@ from .forms import RegisterForm
 from .models import Category, Product, ProductVariant, ProductImage, Order
 
 
-def home(request):
-    products = Product.objects.filter(active=True, is_demo=False).select_related('category').prefetch_related('variants', Prefetch('gallery', queryset=ProductImage.objects.defer('photo_data')))
-    categories = Category.objects.filter(active=True)
-    collections = (Product.objects.filter(active=True,is_demo=False)
-                   .exclude(collection='').values_list('collection', flat=True).distinct()[:12])
-    category_slug = request.GET.get('categoria','').strip()
-    query = request.GET.get('q','').strip()[:80]
+# Leitura da vitrine desacoplada dos campos binários das fotografias.
+# Isso evita que uma galeria com fotos enviadas impeça a listagem de produtos.
+import logging
+from decimal import Decimal
+from urllib.parse import urlsplit
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.urls import reverse
+
+catalog_logger = logging.getLogger(__name__)
+
+
+def _catalog_context(request, mode):
+    category_slug = request.GET.get('categoria', '').strip()[:100]
+    query = request.GET.get('q', '').strip()[:80]
+    collection = request.GET.get('colecao', '').strip()[:100]
+    categories = list(Category.objects.filter(active=True).order_by('name').values('name', 'slug'))
+    collections = list(
+        Product.objects.filter(active=True, is_demo=False)
+        .exclude(collection='')
+        .order_by('collection')
+        .values_list('collection', flat=True).distinct()[:30]
+    )
+    # Apenas campos essenciais. Nunca trazer photo_data (imagem WebP binária)
+    # para as consultas de vitrine, nem carregar o catálogo inteiro na RAM.
+    products_query = Product.objects.filter(active=True, is_demo=False)
     if category_slug:
-        products = products.filter(category__slug=category_slug)
-    colecao = request.GET.get('colecao','').strip()[:100]
-    if colecao:
-        products = products.filter(collection__iexact=colecao)
+        products_query = products_query.filter(category__slug=category_slug)
+    if collection:
+        products_query = products_query.filter(collection__iexact=collection)
     if query:
-        from django.db.models import Q
-        products = products.filter(Q(name__icontains=query)|Q(description__icontains=query)|Q(collection__icontains=query))
-    return render(request,'store/home.html',{'products':products,'categories':categories,'selected_category':category_slug,'search':query,'selected_collection':colecao,'collections':collections})
+        products_query = products_query.filter(
+            Q(name__icontains=query) | Q(description__icontains=query) | Q(collection__icontains=query)
+        )
+    products_query = products_query.order_by('-featured', '-created_at', '-pk').values(
+        'id', 'name', 'slug', 'price', 'sale_price', 'collection',
+        'one_of_one', 'creation_type', 'category__name', 'category__slug',
+    )
+    page_obj = Paginator(products_query, 24).get_page(request.GET.get('pagina', '1'))
+    rows = list(page_obj.object_list)
+    product_ids = [p['id'] for p in rows]
+    covers = {}
+    if product_ids:
+        # Somente metadados, com ordem estável para a capa.
+        images = ProductImage.objects.filter(product_id__in=product_ids).order_by(
+            'product_id', 'position', 'id'
+        ).values('id', 'product_id', 'has_upload', 'image_url')
+        for photo in images:
+            pid = photo['product_id']
+            if pid in covers:
+                continue
+            if photo['has_upload']:
+                covers[pid] = reverse('product_image', args=[photo['id']])
+            else:
+                legacy_url = (photo['image_url'] or '').strip()
+                parts = urlsplit(legacy_url)
+                if (parts.scheme in ('http', 'https') and parts.netloc) or (legacy_url.startswith('/') and not legacy_url.startswith('//')):
+                    covers[pid] = legacy_url
+
+    products = []
+    for entry in rows:
+        price = entry['price']
+        discount = entry['sale_price'] is not None and entry['sale_price'] < price
+        products.append({
+            'id': entry['id'], 'name': entry['name'], 'slug': entry['slug'],
+            'get_absolute_url': reverse('product_detail', args=[entry['slug']]),
+            'price': price, 'sale_price': entry['sale_price'],
+            'effective_price': entry['sale_price'] if discount else price,
+            'has_discount': discount,
+            'collection': entry['collection'],
+            'one_of_one': entry['one_of_one'],
+            'creation_type': entry['creation_type'],
+            'category': {'name': entry['category__name'], 'slug': entry['category__slug']},
+            'main_photo_url': covers.get(entry['id'], ''),
+        })
+    return {
+        'products': products, 'categories': categories,
+        'selected_category': category_slug, 'search': query,
+        'selected_collection': collection, 'collections': collections,
+        'catalog_mode': mode, 'page_obj': page_obj,
+    }
+
+
+def _render_catalog(request, mode):
+    try:
+        return render(request, 'store/home.html', _catalog_context(request, mode))
+    except Exception:
+        # Sem dados pessoais, senhas ou parâmetros de busca nos registros.
+        # Render > Logs mostrará o traceback real para correção, caso persista.
+        catalog_logger.exception('Falha ao renderizar vitrine LEFI. Área: %s', mode)
+        raise
+
+
+def home(request):
+    return _render_catalog(request, 'home')
+
+
+def loja(request):
+    return _render_catalog(request, 'loja')
+
+
+def categorias(request):
+    return _render_catalog(request, 'categorias')
+
+
+def buscar(request):
+    return _render_catalog(request, 'buscar')
 
 
 def detail(request, slug):

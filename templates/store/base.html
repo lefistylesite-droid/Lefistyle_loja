@@ -19,14 +19,14 @@
 <header class="site-header lefi-header"><div class="container lefi-header-inner">
 <a class="lefi-brand" href="{% url 'home' %}" aria-label="LEFI — página inicial"><img src="{% static 'img/lefi-logo.webp' %}" alt="LEFI" width="114" height="56"></a>
 <nav class="nav-links lefi-nav" id="nav-links" aria-label="Navegação principal">
-<a href="{% url 'home' %}#colecao">LOJA</a>
-<a href="{% url 'home' %}#categorias">CATEGORIAS</a>
-<a href="{% url 'home' %}#colecao">COLEÇÕES</a>
+<a href="{% url 'loja' %}">LOJA</a>
+<a href="{% url 'categorias' %}">CATEGORIAS</a>
+<a href="{% url 'loja' %}#colecao">COLEÇÕES</a>
 <a href="{% url 'atelie' %}">O ATELIÊ</a>
 <a href="{% url 'manifesto' %}">NOSSA HISTÓRIA</a>
 </nav>
 <div class="lefi-tools">
-<a class="lefi-tool search-shortcut" href="{% url 'home' %}#colecao" aria-label="Buscar peças"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 5 5"/></svg></a>
+<a class="lefi-tool search-shortcut" href="{% url 'buscar' %}" aria-label="Buscar peças"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 5 5"/></svg></a>
 <a class="lefi-tool" href="{% url 'profile' %}" aria-label="Minha conta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.5"/><path d="M5.3 20c0-3.5 2.7-6 6.7-6s6.7 2.5 6.7 6"/></svg></a>
 <a class="lefi-tool lefi-bag" href="{% url 'cart' %}" aria-label="Sacola com {{ cart_count }} item(ns)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 8.5h15L18.7 21H5.3z"/><path d="M8.6 10V6.5a3.4 3.4 0 0 1 6.8 0V10"/></svg><span class="badge-count">{{ cart_count }}</span></a>
 <button class="menu-toggle lefi-menu-button" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links" data-menu-toggle>☰</button>
@@ -40,7 +40,7 @@
 </div></section>
 <footer class="lefi-footer"><div class="container lefi-footer-grid">
 <div class="lefi-footer-brand"><img src="{% static 'img/lefi-logo.webp' %}" alt="LEFI" width="152" height="75"><p>Moda e arte nascidas da rua. Mãos que reinventam, peças que contam histórias.</p><small>INDEPENDÊNCIA • CRIATIVIDADE • CULTURA</small></div>
-<div><h3>EXPLORE</h3><a href="{% url 'home' %}#colecao">Todas as peças</a><a href="{% url 'home' %}?categoria=jaquetas#colecao">Jaquetas</a><a href="{% url 'home' %}?categoria=calcas#colecao">Calças</a><a href="{% url 'home' %}?categoria=acessorios#colecao">Acessórios</a><a href="{% url 'atelie' %}">Nosso ateliê</a></div>
+<div><h3>EXPLORE</h3><a href="{% url 'loja' %}">Todas as peças</a><a href="{% url 'loja' %}?categoria=jaquetas#colecao">Jaquetas</a><a href="{% url 'loja' %}?categoria=calcas#colecao">Calças</a><a href="{% url 'loja' %}?categoria=acessorios#colecao">Acessórios</a><a href="{% url 'atelie' %}">Nosso ateliê</a></div>
 <div><h3>INFORMAÇÕES</h3><a href="{% url 'como_comprar' %}">Como comprar</a><a href="{% url 'politica_entrega' %}">Entregas e frete</a><a href="{% url 'trocas_devolucoes' %}">Trocas e devoluções</a><a href="{% url 'politica_privacidade' %}">Privacidade</a><a href="{% url 'atendimento' %}">Atendimento</a></div>
 <div><h3>FALE COM A LEFI</h3><p>Para dúvidas sobre tamanho, criação, disponibilidade e pedidos, utilize nossos canais oficiais.</p>
 {% if store_info and store_info.contact_email %}<a href="mailto:{{ store_info.contact_email }}">{{ store_info.contact_email }}</a>{% endif %}

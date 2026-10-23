@@ -22,3 +22,6 @@ html{scroll-behavior:smooth}body{background:var(--bg);color:var(--ink);font-fami
 .lefi-independence{border-left:2px solid #77695a;padding:9px 16px;margin:26px 0;color:#9e968c;font-size:11px;line-height:1.7}
 
 .lefi-capsules{display:flex;flex-wrap:wrap;align-items:center;gap:15px;margin:-18px 0 30px}.lefi-capsules span{font-size:9px;letter-spacing:.2em;color:#aaa}.lefi-capsules a{font-size:10px;text-decoration:underline;text-underline-offset:5px;color:#e4d9cb}.lefi-capsules a.active{color:white;font-weight:900}
+
+/* Paginação acessível da vitrine LEFI */
+.lefi-pagination{display:flex;gap:1rem;align-items:center;justify-content:center;flex-wrap:wrap;padding:2.25rem 0 0;font-size:.78rem;letter-spacing:.12em}.lefi-pagination a{color:inherit;text-decoration:underline;text-underline-offset:5px}.lefi-pagination span{opacity:.7}

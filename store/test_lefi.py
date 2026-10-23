@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase, override_settings
 from django.urls import reverse
-from .models import Category, Product, ProductVariant
+from .models import Category, Product, ProductVariant, ProductImage
 
 class MarcaLEFITests(TestCase):
     def setUp(self):
@@ -47,3 +47,54 @@ class MarcaLEFITests(TestCase):
         self.client.force_login(buyer)
         self.client.post(reverse('cart_add'),{'variant_id':v.pk,'quantity':'1'})
         self.assertContains(self.client.get(reverse('checkout')),'Pagamento temporariamente indisponível')
+
+class VitrineComProdutosTests(TestCase):
+    """Regressão: o erro 500 só ocorria nas listagens com produtos reais."""
+    def setUp(self):
+        self.jaquetas = Category.objects.get(slug='jaquetas')
+        self.acessorios = Category.objects.get(slug='acessorios')
+        self.p = Product.objects.create(
+            category=self.acessorios, name='Boné LEFI Arte de Rua', slug='bone-lefi-arte-rua',
+            description='Edição feita à mão', price=Decimal('189.00'),
+            sale_price=Decimal('169.00'), collection='Reinvenção', active=True, featured=True,
+        )
+        self.imagem = ProductImage.objects.create(
+            product=self.p, photo_data=b'RIFF_placeholder', has_upload=True,
+            alt='Boné de frente', position=0,
+        )
+        ProductVariant.objects.create(
+            product=self.p, sku='LEFI-CAP-1', size='UN', color='Verde', stock=1,
+        )
+
+    def test_home_loja_categorias_busca_com_fotos_cadastradas(self):
+        for name in ('home', 'loja', 'categorias', 'buscar'):
+            with self.subTest(name=name):
+                response = self.client.get(reverse(name))
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, 'Boné LEFI Arte de Rua')
+                self.assertContains(response, reverse('product_image', args=[self.imagem.pk]))
+                self.assertContains(response, '169,00')
+
+    def test_busca_por_nome_descricao_colecao(self):
+        for palavra in ('Boné', 'mão', 'Reinvenção'):
+            with self.subTest(palavra=palavra):
+                self.assertContains(self.client.get(reverse('buscar'), {'q': palavra}), self.p.name)
+        self.assertNotContains(self.client.get(reverse('buscar'), {'q': 'inexistente'}), self.p.name)
+
+    def test_categorias_filtram_e_nao_excluem_produto(self):
+        self.assertContains(self.client.get(reverse('loja'), {'categoria': 'acessorios'}), self.p.name)
+        self.assertNotContains(self.client.get(reverse('loja'), {'categoria': 'jaquetas'}), self.p.name)
+        self.assertEqual(Product.objects.filter(pk=self.p.pk).count(), 1)
+        self.assertTrue(ProductImage.objects.filter(pk=self.imagem.pk).exists())
+
+    def test_paginacao_preserva_filtros(self):
+        for i in range(25):
+            Product.objects.create(category=self.acessorios,
+                name=f'Peça teste {i}', slug=f'peca-teste-{i}', price=Decimal('99.90'))
+        response = self.client.get(reverse('loja'), {'categoria': 'acessorios'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'PRÓXIMA')
+        self.assertContains(response, 'categoria=acessorios')
+        next_page = self.client.get(reverse('loja'), {'categoria': 'acessorios', 'pagina': 2})
+        self.assertEqual(next_page.status_code, 200)
+        self.assertEqual(len(next_page.context['products']), 2)
