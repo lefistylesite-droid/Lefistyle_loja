@@ -1,0 +1,13 @@
+{% extends 'store/base.html' %}
+{% block title %}Como comprar | LEFI{% endblock %}
+{% block content %}
+<section class="container inner-page narrow buying-guide"><span class="eyebrow">SUA EXPERIÊNCIA LEFI</span><h1>Comprar é <em>simples.</em></h1>
+<p class="muted">Escolha seus produtos, confira o total e finalize o pagamento pelo checkout da InfinitePay.</p>
+<div class="buy-guide-step"><span>01</span><div><h2>Encontre seu produto</h2><p>Na página do produto, veja as fotos reais, confira as medidas, o tamanho e a condição de cada peça e adicione ao carrinho.</p></div></div>
+<div class="buy-guide-step"><span>02</span><div><h2>Confira o total</h2><p>O carrinho mostra o preço dos produtos, o valor fixo de entrega e o total antes do pagamento. Na próxima etapa você informa os dados para entrega.</p></div></div>
+<div class="buy-guide-step"><span>03</span><div><h2>Finalize pela InfinitePay</h2><p>Ao continuar, você será direcionado ao checkout da InfinitePay, onde aparecem as opções de pagamento disponíveis, incluindo Pix e cartão conforme configuração da conta.</p></div></div>
+<div class="buy-guide-step"><span>04</span><div><h2>Acompanhe seu pedido</h2><p>Depois do pagamento, acesse Minha conta para verificar a situação. O pedido só aparece como pago após a confirmação da transação.</p></div></div>
+<div class="information-box"><strong>Sobre a segurança do pagamento</strong><p>Os dados de Pix ou cartão são informados no checkout da InfinitePay. A LEFI não solicita o número completo do cartão por mensagens.</p></div>
+<a href="{% url 'home' %}#colecao" class="button button-dark">VER PRODUTOS ↗</a>
+</section>
+{% endblock %}

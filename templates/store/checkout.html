@@ -1,0 +1,21 @@
+{% extends 'store/base.html' %}
+{% block title %}Finalizar compra | LEFI{% endblock %}
+{% block content %}<section class="container inner-page narrow checkout-main"><span class="eyebrow">LEFI · FINALIZAÇÃO</span><h1>Finalize sua <em>compra.</em></h1>
+{% if not configured %}<div class="information-box"><h3>Pagamento temporariamente indisponível</h3><p>Não estamos recebendo novos pagamentos neste momento. Seu carrinho permanece disponível para você tentar novamente mais tarde.</p>
+{% if shipping_configured %}<p>Frete do pedido: <strong>{% if shipping == 0 %}Grátis{% else %}R$ {{ shipping|floatformat:2 }}{% endif %}</strong>. Total com frete: <strong>R$ {{ total_with_shipping|floatformat:2 }}</strong>.</p>{% endif %}</div>
+<a class="button button-dark" href="{% url 'cart' %}">VOLTAR AO CARRINHO ↗</a>
+{% else %}
+{% if manual %}<div class="information-box"><h3>Pedido com atendimento da loja</h3><p>Seu pedido será registrado como pendente. A loja entrará em contato para combinar o pagamento. Nenhuma cobrança será feita nesta etapa.</p></div>{% else %}<div class="checkout-provider"><span class="provider-mark">✓</span><div><strong>Pagamento seguro com InfinitePay</strong><p>Após confirmar o pedido na LEFI, você conclui sua compra em ambiente protegido da InfinitePay, com praticidade e segurança.</p></div></div>
+{% endif %}<div class="information-box checkout-summary"><h3>Revise seu pedido</h3>
+{% for line in lines %}<div class="checkout-summary-row"><span>{{ line.quantity }} × {{ line.product.name }} · {{ line.variant.size }} / {{ line.variant.color }}</span><strong>R$ {{ line.subtotal|floatformat:2 }}</strong></div>{% endfor %}
+<div class="checkout-summary-row"><span>Produtos</span><strong>R$ {{ subtotal|floatformat:2 }}</strong></div>
+<div class="checkout-summary-row"><span>Frete fixo</span><strong>{% if shipping == 0 %}Grátis{% else %}R$ {{ shipping|floatformat:2 }}{% endif %}</strong></div>
+<div class="checkout-summary-row checkout-summary-total"><span>Total a pagar</span><strong>R$ {{ total|floatformat:2 }}</strong></div></div>
+<h2>Dados para entrega</h2>
+<form method="post" class="lefi-checkout-form" id="lefiCheckoutForm">{% csrf_token %}<input type="hidden" name="nonce" value="{{ nonce }}">
+{% if form.non_field_errors %}<div class="error-text">{{ form.non_field_errors }}</div>{% endif %}
+{% for field in form %}<p><label for="{{ field.id_for_label }}">{{ field.label }}</label><br>{{ field }}{% if field.errors %}<small class="error-text">{{ field.errors }}</small>{% endif %}</p>{% endfor %}
+<button type="submit" class="button button-dark wide" id="startPaymentButton">{% if manual %}REGISTRAR PEDIDO ↗{% else %}CONTINUAR PARA INFINITEPAY ↗{% endif %}</button></form>
+<p class="muted small checkout-disclosure">Confira nossas <a href="{% url 'politica_entrega' %}">informações de entrega</a>, <a href="{% url 'trocas_devolucoes' %}">trocas e devoluções</a> e <a href="{% url 'politica_privacidade' %}">política de privacidade</a> antes de finalizar.</p>
+<p class="muted small checkout-disclosure">Ao continuar, a LEFI registra seu pedido. {% if not manual %}Você será direcionado ao checkout seguro da InfinitePay.{% endif %} A confirmação da compra acontece após a confirmação do pagamento. Mantenha esta página aberta até o redirecionamento ser concluído.</p>
+{% endif %}</section>{% endblock %}

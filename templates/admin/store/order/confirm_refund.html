@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}{% block content %}
+<h1>Estorno confirmado na InfinitePay?</h1>
+<p><strong>ATENÇÃO:</strong> esta ação <em>não</em> solicita um estorno à InfinitePay. Só utilize depois de ter feito e confirmado o reembolso diretamente no aplicativo InfinitePay, com o valor correto.</p>
+<form method="post">{% csrf_token %}<input type="hidden" name="action" value="mark_refunded_after_verification">
+{% for order in orders %}<input type="hidden" name="{{ action_checkbox_name }}" value="{{ order.pk }}"><p>Pedido #{{ order.pk }} — {{ order.get_status_display }} — R$ {{ order.total|floatformat:2 }}</p>{% endfor %}
+<input type="hidden" name="index" value="0"><input type="hidden" name="post" value="yes">
+<label for="confirm_refund">Digite exatamente ESTORNO CONFIRMADO NA INFINITEPAY:</label>
+<input type="text" id="confirm_refund" name="confirmed_refund" required style="width:410px">
+<button class="default" type="submit">Registrar no sistema (não solicita estorno ao provedor)</button>
+<a href="{% url 'admin:store_order_changelist' %}">Voltar sem alterar</a></form>
+{% endblock %}

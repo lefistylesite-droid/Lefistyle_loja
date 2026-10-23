@@ -1,0 +1,8 @@
+{% extends 'store/base.html' %}{% block title %}Seu pedido | LEFI{% endblock %}
+{% block content %}<section class="container inner-page narrow"><span class="eyebrow">LEFI · ACOMPANHE SEU PEDIDO</span><h1>Pedido <em>#{{ order.id }}</em></h1>
+{% if order.status == 'paid' or order.status == 'preparing' or order.status == 'shipped' or order.status == 'delivered' %}
+<div class="information-box order-success"><h2>Pagamento confirmado</h2><p>O pagamento deste pedido foi confirmado. Você pode acompanhar a situação do pedido na sua conta.</p></div>
+{% elif order.status == 'cancelled' or order.status == 'refunded' %}<div class="information-box"><h2>Pedido {{ order.get_status_display|lower }}</h2><p>Consulte o histórico em Minha conta. Se houver divergência no pagamento, confira também o comprovante da InfinitePay.</p></div>
+{% elif order.payment_status == 'manual_pending' %}<div class="information-box"><h2>Pedido registrado com sucesso</h2><p>Pagamento pendente. A loja entrará em contato para combinar o pagamento. Nenhuma cobrança foi feita.</p></div>{% else %}<div class="information-box"><h2>Aguardando confirmação de pagamento</h2><p>A LEFI ainda não recebeu uma confirmação de pagamento para este pedido. Se você já pagou, aguarde a atualização e não realize outra cobrança antes de conferir o status na InfinitePay.</p></div>{% endif %}
+<p>Total do pedido: <strong>R$ {{ order.total|floatformat:2 }}</strong></p>
+<a href="{% url 'order_detail' order.pk %}" class="button button-dark">ACOMPANHAR ESTE PEDIDO ↗</a></section>{% endblock %}

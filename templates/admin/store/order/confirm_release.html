@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<div class="module" style="max-width:760px;padding:16px">
+<h2>Atenção: verifique o pagamento antes de devolver estoque</h2>
+<p>O vencimento do link ou uma falha de rede <strong>não comprova</strong> que a cobrança não foi paga ou que não existe Pix em processamento.</p>
+<p>Antes de continuar, consulte manualmente cada pedido e transação no aplicativo InfinitePay e tenha certeza de que NÃO houve pagamento, estorno pendente ou cobrança em trânsito.</p>
+<p>Esta ação só aceita pedidos ainda pendentes, sem registro de pagamento, pelo menos <strong>24 horas após</strong> o vencimento do prazo do pagamento.</p>
+<ul>{% for order in orders %}<li>Pedido #{{ order.pk }} — R$ {{ order.total }} — {{ order.get_status_display }} — Vencimento: {{ order.payment_expires_at|default:"Não definido" }}</li>{% endfor %}</ul>
+<form method="post">{% csrf_token %}
+{% for order in orders %}<input type="hidden" name="{{ action_checkbox_name }}" value="{{ order.pk }}">{% endfor %}
+<input type="hidden" name="action" value="{{ action_name }}">
+<input type="hidden" name="index" value="0">
+<input type="hidden" name="post" value="yes">
+<p><label for="verify">Digite exatamente <strong>CONFERI NA INFINITEPAY</strong>:</label></p>
+<p><input type="text" name="confirmed_unpaid" id="verify" required style="width:320px"></p>
+<p><button type="submit" class="button default">Confirmar devolução manual</button> <a href="../../">Cancelar, voltar aos pedidos</a></p>
+</form></div>
+{% endblock %}

@@ -1,0 +1,31 @@
+:root {--primary:#6c4948; --secondary:#c49a8e; --accent:#8d625d; --primary-fg:#fff; --body-bg:#faf6f2; --body-fg:#2c2220; --header-bg:#302724; --header-color:#fff; --breadcrumbs-bg:#e9d9cc; --breadcrumbs-fg:#342c28; --link-fg:#78534d; --link-hover-color:#321f20; --button-bg:#583b38; --button-hover-bg:#3c2927; --hairline-color:#e6ddd6; --darkened-bg:#f5ece6;}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;}
+#header{padding:16px 32px;background:#2c2321;box-shadow:0 3px 16px rgba(50,30,30,.08);gap:18px;}
+.lefi-admin-brand a{text-decoration:none!important;color:#fff!important;display:flex;flex-direction:column;}
+.lefi-brand-title{font-family:Georgia,serif;font-size:32px;letter-spacing:.14em;line-height:1;}
+.lefi-brand-caption{font-size:9px;letter-spacing:.26em;margin-top:7px;color:#e6bfb7;}
+.lefi-admin-toplink{display:inline-block;margin-right:18px;color:#ffe3d8!important;text-decoration:none;letter-spacing:.02em;font-size:12px;}
+#branding h1{margin:0;}
+#content{padding:26px 30px;}#content h1{font-family:Georgia,serif;font-size:31px;font-weight:400;color:#342321;}
+#content-main .module,.module,.inline-group,div.breadcrumbs{border-radius:11px;overflow:hidden;}
+.module h2,.module caption,.inline-group h2{background:#6e4c47;color:white;letter-spacing:.03em;padding:12px 16px;}
+#changelist-filter h2{background:#6e4c47}.object-tools a{background:#74534d;border-radius:7px;}
+button,.button,input[type=submit],.submit-row input{border-radius:7px;}
+#changelist .results table thead th{background:#f1e7df;color:#4f3c37;padding:12px;}
+#changelist .results table tbody tr:nth-child(even){background:#fff9f5}
+#changelist .results table tbody td,#changelist .results table tbody th{padding:10px 12px;}
+#content-related{border-radius:14px;overflow:hidden;}
+.dashboard #content-main .module{box-shadow:0 5px 15px rgba(30,20,20,.04);background:white;}
+@media(max-width:760px){#header{padding:12px 14px;}#content{padding:16px;}#content h1{font-size:25px}.lefi-brand-title{font-size:24px}.lefi-admin-toplink{margin:0 8px 0 0}}
+/* LEFI v1.2: mesma família visual da nova central de pedidos. */
+:root{--primary:#1c344b;--secondary:#29445e;--accent:#b57c4b;--primary-fg:#fff;--body-bg:#f4f6f8;--body-fg:#253448;--header-bg:#122536;--header-color:#fff;--breadcrumbs-bg:#eaf0f5;--breadcrumbs-fg:#314a62;--link-fg:#29516f;--link-hover-color:#173a54;--button-bg:#1c344b;--button-hover-bg:#2d536f;--hairline-color:#e0e6ed;--darkened-bg:#eef2f6}
+#header{background:#122536}.lefi-brand-caption{color:#bccbda}.lefi-admin-toplink{color:#e9eff5!important}
+#content h1{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-weight:700;font-size:27px;color:#22384e}
+.module h2,.module caption,.inline-group h2,#changelist-filter h2{background:#29445e}
+.object-tools a{background:#29445e}
+#changelist .results table thead th{background:#edf2f6;color:#354c61}
+#changelist .results table tbody tr:nth-child(even){background:#f9fbfd}
+
+/* LEFI | administração em grafite e off-white */
+:root{--primary:#22211f;--secondary:#383632;--accent:#a49a8e;--primary-fg:#fff;--body-bg:#f6f4f0;--body-fg:#242320;--header-bg:#101010;--header-color:#f5f1e9;--breadcrumbs-bg:#eeebe5;--breadcrumbs-fg:#37332f;--link-fg:#3b3732;--link-hover-color:#100e0c;--button-bg:#22211f;--button-hover-bg:#3a352f;--hairline-color:#d9d5ce;--darkened-bg:#f0ede7}
+#header{background:#111}#content h1{color:#242320}.module h2,.module caption,.inline-group h2,#changelist-filter h2{background:#2c2b29}.object-tools a{background:#1b1b1b}.lefi-brand-caption{color:#bcb2a3}.lefi-admin-toplink{color:#e4dcd2!important}

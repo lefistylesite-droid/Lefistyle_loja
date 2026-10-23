@@ -1,0 +1,15 @@
+{% extends 'store/base.html' %}
+{% block title %}Atendimento e contato | LEFI{% endblock %}
+{% block content %}<section class="container inner-page narrow legal-page"><span class="eyebrow">ESTAMOS AQUI PARA AJUDAR</span><h1>Fale com a <em>LEFI.</em></h1><p class="legal-lead">Dúvidas sobre tamanhos, entrega, pedidos, trocas e devoluções? Encontre abaixo os canais oficiais da loja.</p>
+<div class="contact-grid">
+{% if store_info and store_info.whatsapp_url %}<article class="legal-card contact-card"><span class="contact-icon">↗</span><h2>WhatsApp</h2><p>Converse com nosso atendimento pelo canal oficial da LEFI.</p><a class="button button-dark" href="{{ store_info.whatsapp_url }}" target="_blank" rel="noopener noreferrer">ABRIR WHATSAPP ↗</a></article>{% endif %}
+{% if store_info and store_info.contact_email %}<article class="legal-card contact-card"><span class="contact-icon">✉</span><h2>E-mail</h2><p>Envie sua dúvida ou solicitação para a equipe de atendimento.</p><a class="contact-email" href="mailto:{{ store_info.contact_email }}">{{ store_info.contact_email }}</a></article>{% endif %}
+{% if store_info and store_info.instagram_url %}<article class="legal-card contact-card"><span class="contact-icon">◎</span><h2>Instagram</h2><p>Acompanhe a LEFI em nosso perfil oficial.</p><a class="contact-email" href="{{ store_info.instagram_url }}" target="_blank" rel="noopener noreferrer">VER PERFIL ↗</a></article>{% endif %}
+</div>
+{% if not store_info or not store_info.whatsapp_url and not store_info.contact_email and not store_info.instagram_url %}<div class="legal-card"><h2>Atendimento</h2><p>Os canais de contato ainda não foram publicados. Para consultar seus pedidos, entre na área <a href="{% url 'profile' %}">Minha conta</a>. Antes de concluir uma compra, confirme as condições de atendimento da loja.</p></div>{% endif %}
+{% if store_info and store_info.service_hours %}<div class="legal-card"><h2>Horário de atendimento</h2><p>{{ store_info.service_hours }}</p></div>{% endif %}
+<div class="legal-card"><h2>Informações comerciais</h2><p><strong>Loja:</strong> {% if store_info %}{{ store_info.brand_name }}{% else %}LEFI{% endif %}</p>
+{% if store_info and store_info.legal_name %}<p><strong>Razão social:</strong> {{ store_info.legal_name }}</p>{% endif %}
+{% if store_info and store_info.tax_id %}<p><strong>CNPJ:</strong> {{ store_info.tax_id }}</p>{% endif %}
+{% if store_info and store_info.business_address %}<p><strong>Endereço comercial:</strong> {{ store_info.business_address|linebreaksbr }}</p>{% endif %}
+</div><div class="legal-cta"><span>Já fez um pedido?</span><a class="button button-dark" href="{% url 'profile' %}">MEUS PEDIDOS ↗</a></div></section>{% endblock %}

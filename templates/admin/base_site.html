@@ -1,0 +1,10 @@
+{% extends "admin/base.html" %}{% load static %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | LEFI Studio{% endblock %}
+{% block extrahead %}{{ block.super }}
+<link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32.png' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
+{% endblock %}
+{% block branding %}<div class="lefi-admin-brand"><a href="{% url 'admin:index' %}"><span class="lefi-brand-title">LEFI</span><span class="lefi-brand-caption">STUDIO ADMIN</span></a></div>{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'admin/lefi.css' %}">{% endblock %}
+{% block nav-global %}<a class="lefi-admin-toplink" href="{% url 'dashboard' %}">◈ Painel visual</a> <a class="lefi-admin-toplink" href="{% url 'home' %}" target="_blank" rel="noopener">↗ Ver loja</a>{% endblock %}

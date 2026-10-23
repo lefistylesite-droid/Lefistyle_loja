@@ -1,0 +1,9 @@
+{% extends 'store/base.html' %}
+{% block title %}Trocas e devoluções | LEFI{% endblock %}
+{% block content %}<section class="container inner-page narrow legal-page"><span class="eyebrow">COMPRA COM TRANQUILIDADE</span><h1>Trocas e <em>devoluções.</em></h1><p class="legal-lead">Nosso compromisso é orientar você com transparência, respeitando seus direitos como consumidor.</p>
+<div class="legal-card"><h2>Arrependimento de compra online</h2><p>Em compras realizadas pela internet, o Código de Defesa do Consumidor prevê o direito de arrependimento em até <strong>7 dias corridos</strong> a partir do recebimento do produto. Para solicitar, entre em contato com a LEFI pelo canal de atendimento.</p></div>
+<div class="legal-card"><h2>Trocas por tamanho, modelo ou preferência</h2><p>Para solicitar uma troca, informe o número do pedido, o produto e o motivo do contato. Condições comerciais de troca por preferência, além dos direitos previstos em lei, devem ser confirmadas com a loja antes da solicitação.</p></div>
+<div class="legal-card"><h2>Produto com defeito ou divergente</h2><p>Se receber um item com defeito, avaria ou diferente do pedido, procure o atendimento e descreva o ocorrido. A LEFI seguirá os direitos e os prazos estabelecidos pela legislação de defesa do consumidor.</p>
+{% if store_info and store_info.exchange_details %}<div class="legal-additional"><h3>Procedimento da LEFI</h3><p>{{ store_info.exchange_details|linebreaksbr }}</p></div>{% endif %}</div>
+<div class="legal-card"><h2>Como solicitar</h2><p>Tenha em mãos o número do pedido e utilize os canais de atendimento. O procedimento de postagem ou coleta será informado conforme o tipo de solicitação; não envie produtos sem receber as orientações aplicáveis.</p></div>
+<div class="legal-cta"><span>Quer solicitar uma troca ou devolução?</span><a class="button button-dark" href="{% url 'atendimento' %}">ABRIR ATENDIMENTO ↗</a></div></section>{% endblock %}

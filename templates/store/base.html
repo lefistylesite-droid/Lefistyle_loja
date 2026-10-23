@@ -1,0 +1,51 @@
+{% load static %}<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909"><meta name="description" content="LEFI — moda autoral, arte e cultura de rua. Peças reconstruídas e criações feitas à mão, com identidade própria.">
+<meta property="og:locale" content="pt_BR"><meta property="og:type" content="website"><meta property="og:site_name" content="LEFI">
+<meta property="og:title" content="LEFI | Moda autoral, arte e cultura de rua"><meta property="og:description" content="Da rua para o ateliê. Peças com história, design próprio e expressão criativa.">
+<meta property="og:url" content="{{ request.build_absolute_uri }}"><meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/lefi-social.jpg' %}">
+<link rel="icon" href="{% static 'img/favicon.ico' %}"><link rel="apple-touch-icon" href="{% static 'img/apple-touch-icon.png' %}">
+<title>{% block title %}LEFI | Moda autoral, arte e cultura de rua{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Italiana&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/style.css' %}"><link rel="stylesheet" href="{% static 'css/lefi.css' %}">
+<script src="{% static 'js/store.js' %}" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+<div class="lefi-ribbon"><span>LEFI · CRIAÇÃO INDEPENDENTE · ARTE E CULTURA DE RUA</span><span>PEÇAS COM HISTÓRIA, IDENTIDADE E PROPÓSITO</span></div>
+<header class="site-header lefi-header"><div class="container lefi-header-inner">
+<a class="lefi-brand" href="{% url 'home' %}" aria-label="LEFI — página inicial"><img src="{% static 'img/lefi-logo.webp' %}" alt="LEFI" width="114" height="56"></a>
+<nav class="nav-links lefi-nav" id="nav-links" aria-label="Navegação principal">
+<a href="{% url 'home' %}#colecao">LOJA</a>
+<a href="{% url 'home' %}#categorias">CATEGORIAS</a>
+<a href="{% url 'home' %}#colecao">COLEÇÕES</a>
+<a href="{% url 'atelie' %}">O ATELIÊ</a>
+<a href="{% url 'manifesto' %}">NOSSA HISTÓRIA</a>
+</nav>
+<div class="lefi-tools">
+<a class="lefi-tool search-shortcut" href="{% url 'home' %}#colecao" aria-label="Buscar peças"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 5 5"/></svg></a>
+<a class="lefi-tool" href="{% url 'profile' %}" aria-label="Minha conta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.5"/><path d="M5.3 20c0-3.5 2.7-6 6.7-6s6.7 2.5 6.7 6"/></svg></a>
+<a class="lefi-tool lefi-bag" href="{% url 'cart' %}" aria-label="Sacola com {{ cart_count }} item(ns)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 8.5h15L18.7 21H5.3z"/><path d="M8.6 10V6.5a3.4 3.4 0 0 1 6.8 0V10"/></svg><span class="badge-count">{{ cart_count }}</span></a>
+<button class="menu-toggle lefi-menu-button" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links" data-menu-toggle>☰</button>
+</div></div></header>
+{% if messages %}<div class="container flash-area" role="status">{% for message in messages %}<div class="flash {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+<main id="conteudo">{% block content %}{% endblock %}</main>
+<section class="lefi-service" aria-label="Informações da loja"><div class="container lefi-service-grid">
+<div><span class="service-icon">✦</span><strong>CRIAÇÃO AUTORAL</strong><p>Peças selecionadas com atenção ao processo e ao acabamento.</p></div>
+<div><span class="service-icon">◫</span><strong>INFORMAÇÃO TRANSPARENTE</strong><p>Medidas, materiais e condições descritos em cada produto.</p></div>
+<div><span class="service-icon">↗</span><strong>SEU PEDIDO ACOMPANHADO</strong><p>Consulta do pedido e informações de entrega na sua conta.</p></div>
+</div></section>
+<footer class="lefi-footer"><div class="container lefi-footer-grid">
+<div class="lefi-footer-brand"><img src="{% static 'img/lefi-logo.webp' %}" alt="LEFI" width="152" height="75"><p>Moda e arte nascidas da rua. Mãos que reinventam, peças que contam histórias.</p><small>INDEPENDÊNCIA • CRIATIVIDADE • CULTURA</small></div>
+<div><h3>EXPLORE</h3><a href="{% url 'home' %}#colecao">Todas as peças</a><a href="{% url 'home' %}?categoria=jaquetas#colecao">Jaquetas</a><a href="{% url 'home' %}?categoria=calcas#colecao">Calças</a><a href="{% url 'home' %}?categoria=acessorios#colecao">Acessórios</a><a href="{% url 'atelie' %}">Nosso ateliê</a></div>
+<div><h3>INFORMAÇÕES</h3><a href="{% url 'como_comprar' %}">Como comprar</a><a href="{% url 'politica_entrega' %}">Entregas e frete</a><a href="{% url 'trocas_devolucoes' %}">Trocas e devoluções</a><a href="{% url 'politica_privacidade' %}">Privacidade</a><a href="{% url 'atendimento' %}">Atendimento</a></div>
+<div><h3>FALE COM A LEFI</h3><p>Para dúvidas sobre tamanho, criação, disponibilidade e pedidos, utilize nossos canais oficiais.</p>
+{% if store_info and store_info.contact_email %}<a href="mailto:{{ store_info.contact_email }}">{{ store_info.contact_email }}</a>{% endif %}
+{% if store_info and store_info.whatsapp_url %}<a href="{{ store_info.whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp de atendimento ↗</a>{% endif %}
+{% if store_info and store_info.instagram_url %}<a href="{{ store_info.instagram_url }}" target="_blank" rel="noopener noreferrer">Instagram oficial ↗</a>{% endif %}
+</div></div>
+<div class="container lefi-footer-bottom"><span>© {% now 'Y' %} LEFI. Todos os direitos reservados.</span><span>{% if store_info and store_info.legal_name %}{{ store_info.legal_name }}{% if store_info.tax_id %} · CNPJ {{ store_info.tax_id }}{% endif %}{% else %}CRIAÇÃO INDEPENDENTE · BRASIL{% endif %}</span></div></footer>
+</body></html>

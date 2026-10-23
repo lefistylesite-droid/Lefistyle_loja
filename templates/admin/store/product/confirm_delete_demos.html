@@ -1,0 +1,15 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<section class="lefi-confirm" style="max-width:760px;padding:24px;border:1px solid #dac9ba;border-radius:16px;background:white">
+<h2>Excluir apenas os produtos fictícios selecionados?</h2>
+<p>Esta operação remove definitivamente os produtos escolhidos, incluindo todas as fotos cadastradas. Pedidos antigos, caso existam, preservam apenas descrição, SKU, quantidade e preço, sem manter os produtos vinculados.</p>
+<p><strong>Faça backup do banco antes de excluir.</strong> A logo oficial da LEFI permanece no site; os demais produtos reais não serão apagados.</p>
+<ul>{% for product in products %}<li>{{ product.name }} — {{ product.slug }}</li>{% empty %}<li>Nenhum produto fictício selecionado.</li>{% endfor %}</ul>
+<form method="post">{% csrf_token %}
+{% for product in products %}<input type="hidden" name="{{ action_checkbox_name }}" value="{{ product.pk }}">{% endfor %}
+<input type="hidden" name="action" value="{{ action_name }}"><input type="hidden" name="index" value="0"><input type="hidden" name="post" value="yes">
+<label for="confirm-demos">Para confirmar, digite <strong>EXCLUIR FICTICIOS</strong></label>
+<p><input id="confirm-demos" name="delete_demos_confirm" required autocomplete="off" style="max-width:320px;width:100%"></p>
+<button class="button default" type="submit">Confirmar exclusão segura</button> <a href="../">Cancelar</a>
+</form></section>
+{% endblock %}

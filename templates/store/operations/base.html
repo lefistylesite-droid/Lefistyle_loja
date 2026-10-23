@@ -1,0 +1,10 @@
+{% load static %}<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>{% block title %}Gestão de pedidos{% endblock %} · LEFI</title><link rel="icon" href="{% static 'img/favicon.ico' %}"><link rel="stylesheet" href="{% static 'admin/operations.css' %}"></head><body>
+<a class="skip" href="#principal">Ir ao conteúdo</a>
+<aside class="side"><a class="side-brand" href="{% url 'dashboard' %}">✦ <strong>LEFI</strong><small>GESTÃO · MODA AUTORAL</small></a>
+<div class="nav-caption">OPERAÇÃO</div><nav aria-label="Navegação do painel"><a href="{% url 'dashboard' %}">◫ Visão geral</a><a class="active" href="{% url 'operations_orders' %}">▤ Central de pedidos</a>{% if perms.store.view_product %}<a href="{% url 'admin:store_product_changelist' %}">▧ Produtos</a>{% endif %}{% if perms.store.view_productvariant %}<a href="{% url 'admin:store_productvariant_changelist' %}">◈ Estoque</a>{% endif %}{% if perms.store.view_customerprofile %}<a href="{% url 'admin:store_customerprofile_changelist' %}">♧ Clientes</a>{% endif %}<div class="nav-caption">SISTEMA</div><a href="{% url 'admin:index' %}">⚙ Administração</a><a href="{% url 'home' %}" target="_blank" rel="noopener">↗ Visitar loja</a></nav><div class="side-foot">ARTE · RUA · IDENTIDADE</div></aside>
+<div class="wrap"><header class="top"><div class="crumb">LEFI <span> / {% block crumb %}PEDIDOS{% endblock %}</span></div><div class="user"><span>{{ request.user.get_full_name|default:request.user.username }}</span><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="plain" type="submit">Sair</button></form></div></header><main id="principal" class="content">
+{% if messages %}<div class="messages" role="status">{% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+{% block content %}{% endblock %}
+</main><footer class="footer">LEFI · Dados do banco de pedidos <span>{% now 'd/m/Y H:i' %}</span></footer></div>
+<script src="{% static 'admin/operations.js' %}" defer></script>
+</body></html>

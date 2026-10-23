@@ -1,0 +1,10 @@
+{% extends 'store/base.html' %}
+{% block title %}Entregas e frete | LEFI{% endblock %}
+{% block content %}<section class="container inner-page narrow legal-page"><span class="eyebrow">INFORMAÇÕES DE COMPRA</span><h1>Entregas com <em>clareza.</em></h1><p class="legal-lead">Saiba como funciona o frete e quais informações conferir antes de concluir sua compra.</p>
+<div class="legal-card"><h2>Frete do pedido</h2><p>A LEFI utiliza frete fixo por pedido. O valor é apresentado no carrinho e no resumo da compra <strong>antes do pagamento</strong>.</p></div>
+<div class="legal-card"><h2>Preparação e prazo</h2><p><strong>Origem dos envios:</strong> {% if store_info and store_info.dispatch_region %}{{ store_info.dispatch_region }}{% else %}A informar pela loja{% endif %}.</p>
+{% if store_info and store_info.shipping_preparation %}<p><strong>Preparação:</strong> {{ store_info.shipping_preparation }}</p>{% endif %}
+{% if store_info and store_info.delivery_estimate %}<p><strong>Prazo de entrega:</strong> {{ store_info.delivery_estimate }}</p>{% else %}<p>O prazo estimado para o endereço de destino ainda não está publicado. <strong>Consulte a LEFI antes de concluir a compra</strong> para confirmar as condições de entrega na sua região.</p>{% endif %}
+{% if store_info and store_info.shipping_details %}<div class="legal-additional"><h3>Informações da loja</h3><p>{{ store_info.shipping_details|linebreaksbr }}</p></div>{% endif %}</div>
+<div class="legal-card"><h2>Endereço e acompanhamento</h2><p>Confira o endereço e os dados de contato antes de confirmar o pedido. Depois de comprar, acompanhe o status na área <a href="{% url 'profile' %}">Minha conta</a>. Dados sobre o envio e o rastreamento, quando disponíveis, serão comunicados pelos canais de atendimento.</p></div>
+<div class="legal-cta"><span>Precisa esclarecer a entrega?</span><a class="button button-dark" href="{% url 'atendimento' %}">FALAR COM A LEFI ↗</a></div></section>{% endblock %}
